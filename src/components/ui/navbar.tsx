@@ -4,25 +4,26 @@ import MainNav from "@/components/main-nav";
 import StoreSwitcher from "../store-switcher";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prisma";
+import Image from "next/image";
 
 const Navbar = async () => {
+  const { userId } = auth();
 
-  const { userId } = auth()
-
-  if(!userId){
-    redirect("/sign-in")
+  if (!userId) {
+    redirect("/sign-in");
   }
 
   const stores = await prismadb.store.findMany({
-    where:{
+    where: {
       userId,
-    }
-  })
+    },
+  });
 
   return (
     <div className="border-b">
-      <div className="flex h-16 items-center px-4">
-        <StoreSwitcher items={stores}/>
+      <div className="flex h-16 items-center px-4 gap-5">
+        <Image src="/shopicro.png" alt="logo" width="64" height="64" />
+        <StoreSwitcher items={stores} />
         <div>
           <MainNav className="mx-6" />
         </div>
