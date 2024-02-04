@@ -24,7 +24,7 @@ export const HeroClient: React.FC<HeroClientProps> = ({
       <div className="flex items-center justify-between">
         <Heading
           title={`Hero sekcije (${data.length})`}
-          description="Upravljajte hero sekcijom vaše web trgovine"
+          description="Upravljajte hero sekcijama vaše web trgovine"
         />
         <Button onClick={() => router.push(`/${params.storeId}/heroes/new`)}>
           <Plus className="mr-2 h-4 w-4" />

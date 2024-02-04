@@ -15,6 +15,9 @@ export async function GET(
       where: {
         id: params.categoryId,
       },
+      include:{
+        hero: true
+      }
     });
 
     return NextResponse.json(category);

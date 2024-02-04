@@ -5,6 +5,8 @@ import StoreSwitcher from "../store-switcher";
 import { redirect } from "next/navigation";
 import prismadb from "@/lib/prisma";
 import Image from "next/image";
+import HomeImageLink from "./home-link";
+import { ModeToggle } from "../theme-switcher";
 
 const Navbar = async () => {
   const { userId } = auth();
@@ -21,13 +23,16 @@ const Navbar = async () => {
 
   return (
     <div className="border-b">
-      <div className="flex h-16 items-center px-4 gap-5">
-        <Image src="/shopicro.png" alt="logo" width="64" height="64" />
+      <div className="flex justify-center items-center mt-5">
+        <HomeImageLink />
+      </div>
+      <div className="flex h-16 items-center justify-between w-full px-4 gap-5">
         <StoreSwitcher items={stores} />
-        <div>
+        <div className="mr-[11vw]">
           <MainNav className="mx-6" />
         </div>
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="w-fit flex justify-end items-end space-x-4">
+          <ModeToggle />
           <UserButton afterSignOutUrl="/" />
         </div>
       </div>

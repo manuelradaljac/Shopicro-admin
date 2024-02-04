@@ -14,11 +14,6 @@ const MainNav = ({
 
   const routes = [
     {
-      href: `/${params.storeId}`,
-      label: "Početna",
-      active: pathname === `/${params.storeId}`,
-    },
-    {
       href: `/${params.storeId}/heroes`,
       label: "Hero sekcije",
       active: pathname === `/${params.storeId}/heroes`,
@@ -34,14 +29,14 @@ const MainNav = ({
       active: pathname === `/${params.storeId}/sizes`,
     },
     {
-      href: `/${params.storeId}/colors`,
-      label: "Boje",
-      active: pathname === `/${params.storeId}/colors`,
-    },
-    {
       href: `/${params.storeId}/products`,
       label: "Proizvodi",
       active: pathname === `/${params.storeId}/products`,
+    },
+    {
+      href: `/${params.storeId}/colors`,
+      label: "Boje",
+      active: pathname === `/${params.storeId}/colors`,
     },
     {
       href: `/${params.storeId}/orders`,

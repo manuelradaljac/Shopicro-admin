@@ -17,6 +17,7 @@ model Store {
   colors     Color[]    @relation("StoreToColor")
   product    Product[]  @relation("StoreToProduct")
   order      Order[]    @relation("StoreToOrder")
+  brand      Brand[]    @relation("StoreToBrand")
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
@@ -66,6 +67,17 @@ model Color {
   updatedAt DateTime  @updatedAt
 }
 
+// TODO NAPRAVIT BRAND STRANICU U SHOPU I DODAT SVE KO NA ZALANDU ABT YOU ITD.
+model Brand {
+  id        String    @id @default(uuid())
+  storeId   String
+  store     Store     @relation("StoreToBrand", fields: [storeId], references: [id])
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Product {
   id         String      @id @default(uuid())
   storeId    String
@@ -82,6 +94,8 @@ model Product {
   size       Size        @relation(fields: [sizeId], references: [id])
   colorId    String
   color      Color       @relation(fields: [colorId], references: [id])
+  brandId    String
+  brand      Brand       @relation(fields: [brandId], references: [id])
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 }
