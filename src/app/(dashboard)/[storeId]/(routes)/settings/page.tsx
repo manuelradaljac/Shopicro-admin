@@ -2,10 +2,12 @@ import prismadb from "@/lib/prisma";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { SettingsForm } from "./components/settings-form";
+import { StoreSettings } from "@prisma/client";
 
 interface SettingsPageProps {
   params: {
     storeId: string;
+    storeSettings: StoreSettings
   };
 }
 
@@ -20,6 +22,9 @@ const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
     where: {
       id: params.storeId,
       userId,
+    },
+    include: {
+      storeSettings: true,
     },
   });
 

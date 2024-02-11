@@ -24,7 +24,6 @@ import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "./image-upload";
-
 interface HeroFormProps {
   initialData: Hero | null;
 }
@@ -32,6 +31,7 @@ interface HeroFormProps {
 const formSchema = z.object({
   label: z.string().min(1),
   imageUrl: z.string().min(1),
+  textColor: z.string().default("#fff").optional(),
 });
 
 type HeroFormValues = z.infer<typeof formSchema>;
@@ -57,6 +57,7 @@ export const HeroForm: React.FC<HeroFormProps> = ({ initialData }) => {
     defaultValues: initialData || {
       label: "",
       imageUrl: "",
+      textColor: "",
     },
   });
 
@@ -64,14 +65,17 @@ export const HeroForm: React.FC<HeroFormProps> = ({ initialData }) => {
     try {
       setLoading(true);
       if (initialData) {
-        await axios.patch(`/api/${params.storeId}/heroes/${params.heroId}`, data);
+        await axios.patch(
+          `/api/${params.storeId}/heroes/${params.heroId}`,
+          data
+        );
       } else {
         await axios.post(`/api/${params.storeId}/heroes`, data);
       }
 
-      router.refresh()
-      router.push(`/${params.storeId}/heroes/`)
-      router.refresh()
+      router.refresh();
+      router.push(`/${params.storeId}/heroes/`);
+      router.refresh();
       toast.success(toastMsg);
     } catch (error) {
       toast.error("Nešto je pošlo po krivu");
@@ -155,6 +159,26 @@ export const HeroForm: React.FC<HeroFormProps> = ({ initialData }) => {
                       placeholder="Ime hero sekcije"
                       {...field}
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="textColor"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Boja teksta</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-x-5">
+                      <Input
+                        disabled={loading}
+                        placeholder="hex vrijednost boje"
+                        {...field}
+                      />
+                      <div className="border p-5 rounded-full" style={{ backgroundColor: field.value}}/>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -21,7 +21,7 @@ import { toast } from 'sonner'
 import axios from "axios";
 
 const formSchema = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1 ,{message: 'Ime trgovine je obavezno'}),
 });
 
 export const StoreModal = () => {
@@ -68,7 +68,7 @@ export const StoreModal = () => {
                   <FormItem>
                     <FormLabel>Ime trgovine</FormLabel>
                     <FormControl>
-                      <Input disabled={loading} className="placeholder:text-gray-400 text-gray-100" placeholder="E-Commerce" {...field} />
+                      <Input disabled={loading} className="placeholder:text-gray-400 text-gray-100" placeholder="Moja Trgovina" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

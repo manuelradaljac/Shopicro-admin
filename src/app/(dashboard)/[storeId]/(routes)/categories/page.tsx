@@ -25,7 +25,7 @@ const CategoryPage = async ({
     id: item.id,
     name: item.name,
     heroLabel: item.hero.label,
-    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    createdAt: format(item.createdAt, "dd.MM.yyyy"),
   }))
 
   return (

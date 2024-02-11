@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 
 export async function POST(
   req: Request,
@@ -10,7 +11,7 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived } = body;
+    const { name, price, categoryId, colorId, sizeId, images, isFeatured, isArchived, numberInStock } = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -65,6 +66,8 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
+    const slug = slugify(name);
+
     const product = await prismadb.product.create({
       data: {
         name,
@@ -75,6 +78,7 @@ export async function POST(
         colorId,
         sizeId,
         storeId: params.storeId,
+        slug,
         images: {
           createMany: {
             data: [
@@ -85,7 +89,16 @@ export async function POST(
       },
     });
 
-    return NextResponse.json(product);
+    const inventory = await prismadb.inventory.create({
+      data: {
+        productId: product.id,
+        numberInStock,
+        isInStock: numberInStock > 0, 
+        storeId: params.storeId,
+      },
+    });
+
+    return NextResponse.json({product, inventory});
   } catch (error) {
     console.log("[PRODUCT_POST_METHOD]", error);
     return new NextResponse("Internal error", { status: 500 });
@@ -121,6 +134,7 @@ export async function GET(
         images: true,
         size: true,
         color: true,
+        Inventory: true,
       },
       orderBy: {
         createdAt: "desc",

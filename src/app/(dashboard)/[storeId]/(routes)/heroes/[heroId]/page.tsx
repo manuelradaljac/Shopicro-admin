@@ -11,7 +11,7 @@ const HeroPage = async ({ params }: { params: { heroId: string } }) => {
   return (
     <div className="flex flex-col">
       <div className="flex-1 space-y-4 p-8 pt-6">
-      <HeroForm initialData={hero}/>
+        <HeroForm initialData={hero}/>
       </div>
     </div>
   );

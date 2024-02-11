@@ -4,6 +4,8 @@ import { ProductColumn } from "./components/columns";
 import { format } from "date-fns";
 import { priceFormatter } from "@/lib/utils";
 
+export const revalidate = 0;
+
 const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
   
   const products = await prismadb.product.findMany({
@@ -29,7 +31,7 @@ const ProductsPage = async ({ params }: { params: { storeId: string } }) => {
     category: item.category.name,
     size: item.size.name,
     color: item.color.value,
-    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    createdAt: format(item.createdAt, "dd.MM.yyyy"),
   }));
 
   return (

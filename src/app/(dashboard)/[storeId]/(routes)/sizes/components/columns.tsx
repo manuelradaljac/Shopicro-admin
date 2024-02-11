@@ -12,6 +12,11 @@ export type SizeColumn = {
   createdAt: string
 }
 
+export type CategoriesSelectorProps = {
+  id: string;
+  name: string;
+}
+
 export const columns: ColumnDef<SizeColumn>[] = [
   {
     accessorKey: "name",

@@ -1,10 +1,11 @@
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { productId: string } }
+  { params }: { params: { productId: string }}
 ) {
   try {
     if (!params.productId) {
@@ -13,14 +14,15 @@ export async function GET(
 
     const product = await prismadb.product.findUnique({
       where: {
-        id: params.productId,
+        slug: params.productId,
       },
       include: {
         category: true,
         images: true,
         size: true,
         color: true,
-      }
+        Inventory: true
+      },
     });
 
     return NextResponse.json(product);
@@ -47,6 +49,7 @@ export async function PATCH(
       images,
       isFeatured,
       isArchived,
+      numberInStock
     } = body;
 
     if (!userId) {
@@ -99,12 +102,14 @@ export async function PATCH(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 403 });
+      return new NextResponse("Unauthorized", { status: 405 });
     }
+
+    const slug = slugify(name);
 
     await prismadb.product.update({
       where: {
-        id: params.productId
+        id: params.productId,
       },
       data: {
         name,
@@ -117,25 +122,37 @@ export async function PATCH(
         },
         isFeatured,
         isArchived,
+        slug,
       },
     });
 
     const product = await prismadb.product.update({
       where: {
-        id: params.productId
+        id: params.productId,
       },
       data: {
         images: {
           createMany: {
-            data: [
-              ...images.map((image: { url: string }) => image),
-            ],
+            data: [...images.map((image: { url: string }) => image)],
           },
         },
       },
-    })
+    });
 
-    return NextResponse.json(product);
+    let inventoryData = {
+      numberInStock: numberInStock,
+      ...(isArchived === false && numberInStock > 0 && { isInStock: true })
+    };
+
+    // Update inventory
+    const inventory = await prismadb.inventory.update({
+      where: { productId: params.productId },
+      data: inventoryData,
+    });
+
+    //TODO napravit opciju da se nastavi prodavat proizvod nakon sto ode out of stock al da ima pie chart na pocetnoj warning ili push notification (ako prode zupanijsko)
+
+    return NextResponse.json({product, inventory});
   } catch (error) {
     console.log("[PRODUCT_PATCH_METHOD]", error);
     return new NextResponse("Internal error", { status: 500 });
@@ -165,18 +182,25 @@ export async function DELETE(
     });
 
     if (!storeByUserId) {
-      return new NextResponse("Unauthorized", { status: 405 });
+      return new NextResponse("Unauthorized", { status: 403 });
     }
+    
+    await prismadb.inventory.deleteMany({
+      where: {
+        productId: params.productId,
+      },
+    });
 
-    const product = await prismadb.product.deleteMany({
+    const product = await prismadb.product.delete({
       where: {
         id: params.productId,
       },
     });
 
-    return NextResponse.json(product);
+    return NextResponse.json({ product });
   } catch (error) {
     console.log("[PRODUCT_DELETE_METHOD]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
+

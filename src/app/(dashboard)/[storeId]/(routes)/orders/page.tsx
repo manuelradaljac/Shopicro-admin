@@ -3,6 +3,7 @@ import { OrderClient } from "./components/client";
 import { OrderColumn } from "./components/columns";
 import { format } from "date-fns"
 import { priceFormatter } from "@/lib/utils";
+import { CheckIcon, X } from "lucide-react";
 
 const OrdersPage = async ({
   params
@@ -35,7 +36,7 @@ const OrdersPage = async ({
       return total + Number(item.product.price)
     }, 0)),
     isPaid: item.isPaid,
-    createdAt: format(item.createdAt, "MMMM do, yyyy"),
+    createdAt: format(item.createdAt, "dd.MM.yyyy"),
   }))
 
   return (

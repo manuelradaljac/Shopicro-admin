@@ -12,6 +12,7 @@ const ProductPage = async ({
     },
     include: {
       images: true,
+      Inventory: true,
     },
   });
 
@@ -25,6 +26,9 @@ const ProductPage = async ({
     where: {
       storeId: params.storeId,
     },
+    include: {
+      categories: true,
+    }
   });
 
   const colors = await prismadb.color.findMany({

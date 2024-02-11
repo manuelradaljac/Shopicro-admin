@@ -1,4 +1,5 @@
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -14,6 +15,9 @@ export async function GET(
     const sizes = await prismadb.size.findUnique({
       where: {
         id: params.sizeId,
+      },
+      include: {
+        categories: true,
       },
     });
 
@@ -63,6 +67,8 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
+    const slug = slugify(name); 
+
     const sizes = await prismadb.size.updateMany({
       where: {
         id: params.sizeId,
@@ -70,6 +76,7 @@ export async function PATCH(
       data: {
         name,
         value,
+        slug,
       },
     });
 

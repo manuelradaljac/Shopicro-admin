@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 
 export async function POST(
   req: Request,
@@ -10,7 +11,7 @@ export async function POST(
     const { userId } = auth();
     const body = await req.json();
 
-    const { name, heroId } = body;
+    const { name, heroId} = body;
 
     if (!userId) {
       return new NextResponse("Unauthenticated", { status: 401 });
@@ -29,6 +30,8 @@ export async function POST(
     if (!params.storeId) {
       return new NextResponse("Id trgovine je obvezan", { status: 400 });
     }
+    
+    const slug = slugify(name)
 
     const storeByUserId = await prismadb.store.findFirst({
       where: {
@@ -46,6 +49,7 @@ export async function POST(
         name,
         heroId,
         storeId: params.storeId,
+        slug,
       },
     });
 

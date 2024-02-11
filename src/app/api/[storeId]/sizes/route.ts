@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 
 export async function POST(
   req: Request,
@@ -41,11 +42,14 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
+    const slug = slugify(name);
+
     const size = await prismadb.size.create({
       data: {
         name,
         value,
         storeId: params.storeId,
+        slug,
       },
     });
 
@@ -68,6 +72,9 @@ export async function GET(
     const sizes = await prismadb.size.findMany({
       where: {
         storeId: params.storeId,
+      },
+      include: {
+        categories: true,
       },
     });
 

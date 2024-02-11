@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product, Image, Category, Color, Size } from "@prisma/client";
+import { Product, Image, Category, Color, Size, Inventory } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -54,6 +54,8 @@ const formSchema = z.object({
   sizeId: z.string().min(1),
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
+  numberInStock: z.coerce.number().min(1).default(1).optional(),
+  slug: z.string(),
 });
 
 type ProductFormValues = z.infer<typeof formSchema>;
@@ -95,6 +97,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({
           sizeId: "",
           isFeatured: false,
           isArchived: false,
+          numberInStock: 1,
+          slug:"",
         },
   });
 
@@ -110,8 +114,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
         await axios.post(`/api/${params.storeId}/products`, data);
       }
 
-      router.refresh();
-      router.push(`/${params.storeId}/products/`);
+      router.push(`/${params.storeId}/products`);
       router.refresh();
       toast.success(toastMsg);
     } catch (error) {
@@ -120,7 +123,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
       setLoading(false);
     }
   };
-
+  
   const onDelete = async () => {
     try {
       setLoading(true);
@@ -318,6 +321,19 @@ export const ProductForm: React.FC<ProductFormProps> = ({
             />
             <FormField
               control={form.control}
+              name="numberInStock"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Broj proizvoda na zalihi</FormLabel>
+                  <FormControl>
+                    <Input disabled={loading} placeholder="22" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="isFeatured"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-4 space-y-0 rounded-md border p-4">
@@ -331,7 +347,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({
                     <FormLabel>Istaknuti proizvod</FormLabel>
                     <FormDescription>
                       Proizvod će se pojaviti na početnoj stranici kao istaknuti
-                      porizvod
+                      proizvod
                     </FormDescription>
                   </div>
                   <FormMessage />

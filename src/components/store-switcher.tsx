@@ -63,14 +63,14 @@ export default function StoreSwitcher({
           role="combobox"
           aria-expanded={open}
           aria-label="Select a store"
-          className={cn("w-[200px] justify-between", className)}
+          className={cn("w-[15rem] justify-between", className)}
         >
           <StoreIcon className="mr-1 h-4 w-4" />
           {currentStore?.label}
           <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-fit p-0">
         <Command>
           <CommandList>
             <CommandInput placeholder="Pretraži trgovine..." />
@@ -106,7 +106,7 @@ export default function StoreSwitcher({
                 }}
               >
                 <PlusCircle className="mr-2 h-5 w-5" />
-                Stvori trgovinu
+                Stvori novu trgovinu
               </CommandItem>
             </CommandGroup>
           </CommandList>

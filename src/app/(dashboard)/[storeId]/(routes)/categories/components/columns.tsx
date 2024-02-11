@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import CellAction from "./cell-action"
+import { Category } from "@prisma/client"
 
 export type CategoryColumn = {
   id: string
@@ -22,7 +23,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "Datum",
+    header: "Stvoreno",
   },
   {
     accessorKey: "id",

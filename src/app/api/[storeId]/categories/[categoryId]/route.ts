@@ -1,4 +1,5 @@
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -66,6 +67,8 @@ export async function PATCH(
       return new NextResponse("Unauthorized", { status: 403 });
     }
 
+    const slug = slugify(name);
+
     const category = await prismadb.category.updateMany({
       where: {
         id: params.categoryId,
@@ -73,6 +76,7 @@ export async function PATCH(
       data: {
         name,
         heroId,
+        slug,
       },
     });
 

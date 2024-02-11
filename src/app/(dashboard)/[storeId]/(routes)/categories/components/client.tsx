@@ -15,7 +15,6 @@ interface CategoryClientProps{
 export const CategoryClient: React.FC<CategoryClientProps> = ({
   data
 }) => {
-  
   const router = useRouter();
   const params = useParams();
 
@@ -23,7 +22,7 @@ export const CategoryClient: React.FC<CategoryClientProps> = ({
     <>
       <div className="flex items-center justify-between">
         <Heading
-          title={`Kategorije (${data.length})`}
+          title={`Kategorije proizvoda (${data.length})`}
           description="Upravljajte kategorijama vaše web trgovine"
         />
         <Button onClick={() => router.push(`/${params.storeId}/categories/new`)}>

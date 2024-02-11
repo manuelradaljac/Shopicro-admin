@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import prismadb from "@/lib/prisma";
+import { slugify } from "@/lib/utils";
 
 export async function POST(
   req: Request,
@@ -40,6 +41,8 @@ export async function POST(
     if (!storeByUserId) {
       return new NextResponse("Unauthorized", { status: 403 });
     }
+
+    const slug = slugify(name);
 
     const color = await prismadb.color.create({
       data: {
