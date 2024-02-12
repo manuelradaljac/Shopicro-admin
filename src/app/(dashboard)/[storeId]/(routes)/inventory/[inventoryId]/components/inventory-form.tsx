@@ -192,8 +192,7 @@ export const InventoryForm: React.FC<InventoryFormProps> = ({ initialData, produ
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-4 space-y-0 rounded-md border p-4">
                   <FormControl>
-                    <Checkbox
-                      required
+                    <Checkbox                      
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />

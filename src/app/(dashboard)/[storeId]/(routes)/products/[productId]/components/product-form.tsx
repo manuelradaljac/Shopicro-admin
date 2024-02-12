@@ -35,9 +35,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface ProductFormProps {
-  initialData:
-    | (Product & {
-        images: Image[];
+  initialData: (Product & {
+        images: Image[]
       })
     | null;
   categories: Category[];
@@ -175,17 +174,11 @@ export const ProductForm: React.FC<ProductFormProps> = ({
               <FormItem>
                 <FormLabel>Slike</FormLabel>
                 <FormControl>
-                  <ImageUpload
-                    value={field.value.map((image) => image.url)}
-                    disabled={loading}
-                    onChange={(url) =>
-                      field.onChange([...field.value, { url }])
-                    }
-                    onRemove={(url) =>
-                      field.onChange([
-                        ...field.value.filter((current) => current.url !== url),
-                      ])
-                    }
+                <ImageUpload 
+                    value={field.value.map((image) => image.url)} 
+                    disabled={loading} 
+                    onChange={(url) => field.onChange([...field.value, { url }])}
+                    onRemove={(url) => field.onChange([...field.value.filter((current) => current.url !== url)])}
                   />
                 </FormControl>
                 <FormMessage />
