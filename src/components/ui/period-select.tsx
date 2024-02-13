@@ -5,11 +5,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-  
-interface DatePeriodSelectProps {
-}
 
-const DatePeriodSelect: React.FC<DatePeriodSelectProps> = () => {
+const DatePeriodSelect = () => {
   return (
     <Select>
       <SelectTrigger className="w-fit">
