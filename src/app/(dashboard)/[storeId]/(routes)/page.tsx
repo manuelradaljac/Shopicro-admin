@@ -13,7 +13,6 @@ import Link from "next/link";
 
 interface DashboardPageProps {
   params: { storeId: string };
-  onPeriodChange: (value: string) => void;
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
