@@ -30,7 +30,7 @@ import ImageUpload from "./image-upload";
 interface SettingsFormProps {
   initialData:
     | (Store & {
-        storeSettings: StoreSettings;
+        storeSettings: StoreSettings[];
       })
     | null;
 }
@@ -99,7 +99,7 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({ initialData }) => {
       <div className="flex items-center justify-between">
         <Heading
           title="Postavke"
-          description="Upravljajte postavkama trgovina"
+          description="Upravljajte postavkama trgovine"
         />
         <Button
           variant="destructive"

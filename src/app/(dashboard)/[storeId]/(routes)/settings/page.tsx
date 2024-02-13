@@ -7,7 +7,7 @@ import { StoreSettings } from "@prisma/client";
 interface SettingsPageProps {
   params: {
     storeId: string;
-    storeSettings: StoreSettings
+    storeSettings: StoreSettings[]
   };
 }
 

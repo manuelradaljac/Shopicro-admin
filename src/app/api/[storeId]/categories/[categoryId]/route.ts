@@ -17,7 +17,7 @@ export async function GET(
         id: params.categoryId,
       },
       include:{
-        hero: true
+        hero: true,
       }
     });
 

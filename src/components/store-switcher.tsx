@@ -49,7 +49,7 @@ export default function StoreSwitcher({
 
   const [open, setOpen] = useState(false);
 
-  const onStoreSelect = (store: { value: string; label: string }) => {
+  const onStoreSelect = (store: { value: string; label: string } ) => {
     setOpen(false);
     router.push(`/${store.value}`);
   };
@@ -75,7 +75,7 @@ export default function StoreSwitcher({
           <CommandList>
             <CommandInput placeholder="Pretraži trgovine..." />
             <CommandEmpty>Trgovina nije pronađena</CommandEmpty>
-            <CommandGroup heading="Stores">
+            <CommandGroup heading="Trgovine">
               {formattedItems.map((store) => (
                 <CommandItem
                   key={store.value}

@@ -14,7 +14,7 @@ export async function GET(
 
     const product = await prismadb.product.findUnique({
       where: {
-        id: params.productId,
+        slug: params.productId,
       },
       include: {
         category: true,

@@ -13,14 +13,15 @@ import Link from "next/link";
 
 interface DashboardPageProps {
   params: { storeId: string };
+  onPeriodChange: (value: string) => void;
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
   const totalRevenue = await getTotalRevenue(params.storeId);
-  const salesNumber = await getSalesNumber(params.storeId);
+  const salesNumber = await getSalesNumber(params.storeId, 14);
   const stockNumber = await getStockNumber(params.storeId);
   const chartData = await getGraphRevenue(params.storeId);
-  const stripeBalance = await getStripeBalance()
+  const stripeBalance = await getStripeBalance();
 
   return (
     <div className="flex-col">
@@ -30,6 +31,17 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
           description="Glavna stranica za upravljanje vašom web trgovinom"
         />
         <Separator />
+        <div className="grid gap-4 grid-cols-3">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle>Sredstva dostupna za isplatu (sve trgovine)</CardTitle>
+              <Landmark className="h-5 w-5 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stripeBalance}</div>
+            </CardContent>
+          </Card>
+        </div>
         <div className="grid gap-4 grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -44,24 +56,19 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle>Sredstva dostupna za isplatu</CardTitle>
-              <Landmark className="h-5 w-5 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {stripeBalance}
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="hover:underline">
-                <Link href={``}>Narudžbe</Link>
+                <Link href={`${params.storeId}/orders`}>Narudžbe</Link>
               </CardTitle>
               <CreditCard className="h-5 w-5 text-muted-foreground" />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">+{salesNumber}</div>
+            <CardContent className="flex flex-row justify-between">
+              <div className="text-2xl font-bold">
+                {salesNumber === 0 ? (
+                  "0"
+                ) : (
+                  <p className="text-green-500">+{salesNumber}</p>
+                )}
+              </div>
             </CardContent>
           </Card>
           <Card>
