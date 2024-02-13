@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from '@vercel/analytics/react';
 import "@/app/globals.css"
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,6 +23,7 @@ export default function AuthLayout({
             >
               {children}
             </ThemeProvider>
+            <Analytics />
           </body>
         </html>
     </>
