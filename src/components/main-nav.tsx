@@ -34,14 +34,14 @@ const MainNav = ({
       active: pathname === `/${params.storeId}/inventory`,
     },
     {
-      href: `/${params.storeId}/products`,
-      label: "Proizvodi",
-      active: pathname === `/${params.storeId}/products`,
-    },
-    {
       href: `/${params.storeId}/colors`,
       label: "Boje",
       active: pathname === `/${params.storeId}/colors`,
+    },
+    {
+      href: `/${params.storeId}/products`,
+      label: "Proizvodi",
+      active: pathname === `/${params.storeId}/products`,
     },
     {
       href: `/${params.storeId}/orders`,

@@ -83,7 +83,6 @@ export async function POST(req: Request, { params }: { params: { storeId: string
   });
 } catch (error) {
   console.error("Error processing request:", error);
-  // Ensure CORS headers are included in error responses as well
   return new NextResponse("Internal server error", { status: 500, headers: corsHeaders });
 }
 }
