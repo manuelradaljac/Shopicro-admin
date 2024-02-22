@@ -68,7 +68,8 @@ export async function PATCH(
     }
 
     const slug = slugify(name);
-
+    // maknit da je unique slug ostavit samo za proizvode jer ako jedan korisnik stvori odjeca drugi nemoze stvorit
+    // isto maknit to u schemi za boje i velicine
     const category = await prismadb.category.updateMany({
       where: {
         id: params.categoryId,
