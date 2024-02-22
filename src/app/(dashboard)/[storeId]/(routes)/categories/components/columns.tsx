@@ -18,7 +18,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
   },
   {
     accessorKey: "hero",
-    header: "Hero kategorije",
+    header: "Hero sekcija",
     cell: ({row}) => row.original.heroLabel,
   },
   {
