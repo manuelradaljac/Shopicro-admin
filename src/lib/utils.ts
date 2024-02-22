@@ -12,5 +12,5 @@ export const priceFormatter= new Intl.NumberFormat("de-DE",{
 })
 
 export const slugify = (text: string) => {
-  return slug(text);
+  return slug(text)
 }
